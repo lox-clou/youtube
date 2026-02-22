@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TubeFlix - Клон Ютуба от Рика</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Шапка как у Ютуба, блять -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn">☰</button>
+            <div class="logo">
+                <span class="logo-red">►</span>
+                <span class="logo-text">TubeFlix</span>
+            </div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Введите запрос...">
+            <button class="search-btn">🔍</button>
+            <button class="voice-search">🎤</button>
+        </div>
+        
+        <div class="header-right">
+            <button class="create-btn">➕ Создать</button>
+            <button class="apps-btn">📱</button>
+            <button class="notifications-btn">🔔</button>
+            <div class="avatar">👤</div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Боковая панель -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">🏠 Главная</a>
+                <a href="#" class="nav-item">▶ Shots</a>
+                <a href="#" class="nav-item">📋 Подписки</a>
+                <hr>
+                <a href="#" class="nav-item">📚 Библиотека</a>
+                <a href="#" class="nav-item">📜 История</a>
+                <a href="#" class="nav-item">🎬 Ваши видео</a>
+                <a href="#" class="nav-item">⏰ Смотреть позже</a>
+                <a href="#" class="nav-item">👍 Понравившиеся</a>
+                <hr>
+                <h3>Подписки</h3>
+                <a href="#" class="nav-item">🔬 Rick Sanchez</a>
+                <a href="#" class="nav-item">🧪 Morty Smith</a>
+                <a href="#" class="nav-item">👽 Birdperson</a>
+                <a href="#" class="nav-item">🤖 Squanchy</a>
+            </nav>
+        </aside>
+
+        <!-- Основной контент -->
+        <div class="content">
+            <!-- Категории -->
+            <div class="categories">
+                <button class="category-btn active">Все</button>
+                <button class="category-btn">Игры</button>
+                <button class="category-btn">Музыка</button>
+                <button class="category-btn">Наука</button>
+                <button class="category-btn">Приключения</button>
+                <button class="category-btn">Мультивы</button>
+                <button class="category-btn">Портал-шоу</button>
+                <button class="category-btn">Гараж</button>
+            </div>
+
+            <!-- Сетка видео -->
+            <div class="video-grid">
+                <!-- Видео 1 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/00ff00?text=Рик+и+Морти" alt="Thumbnail">
+                        <span class="duration">10:15</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🧪</div>
+                        <div class="video-details">
+                            <h4>Как создать портал в домашних условиях</h4>
+                            <p class="channel-name">Rick Sanchez</p>
+                            <p class="video-stats">1.5M просмотров • 2 дня назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Видео 2 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff00ff?text=Морти+облажался" alt="Thumbnail">
+                        <span class="duration">3:42</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🧪</div>
+                        <div class="video-details">
+                            <h4>Морти чуть не взорвал гараж</h4>
+                            <p class="channel-name">Rick Sanchez</p>
+                            <p class="video-stats">5M просмотров • неделю назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Видео 3 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/ffff00?text=Планета+Блипс" alt="Thumbnail">
+                        <span class="duration">22:30</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">👽</div>
+                        <div class="video-details">
+                            <h4>Путешествие на планету обезьян</h4>
+                            <p class="channel-name">Birdperson</p>
+                            <p class="video-stats">800K просмотров • месяц назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Видео 4 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/00ffff?text=Научное+шоу" alt="Thumbnail">
+                        <span class="duration">15:45</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🤖</div>
+                        <div class="video-details">
+                            <h4>Квантовая физика для тупых</h4>
+                            <p class="channel-name">Squanchy</p>
+                            <p class="video-stats">2M просмотров • 3 дня назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Видео 5 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff0000?text=Межгалактический+совет" alt="Thumbnail">
+                        <span class="duration">42:10</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">👾</div>
+                        <div class="video-details">
+                            <h4>Совет Риков: экстренное собрание</h4>
+                            <p class="channel-name">Council of Ricks</p>
+                            <p class="video-stats">10M просмотров • год назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Видео 6 -->
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff8800?text=Шортс+от+Морти" alt="Thumbnail">
+                        <span class="duration">0:45</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🧪</div>
+                        <div class="video-details">
+                            <h4>#shorts Морти пытается быть крутым</h4>
+                            <p class="channel-name">Morty Smith</p>
+                            <p class="video-stats">100K просмотров • час назад</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
