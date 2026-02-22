@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITube - Клон Ютуба от Рика</title>
+    <title>YouTube</title>
     <style>
-        /* Стили внутри, чтобы ты не потерял, долбаеб */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
         }
 
         body {
-            background-color: #030303;
+            background-color: #0f0f0f;
             color: #fff;
         }
 
-        /* Шапка */
+        /* Шапка YouTube */
         .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 60px;
-            background-color: #030303;
+            height: 56px;
+            background-color: #0f0f0f;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 16px;
             border-bottom: 1px solid #3f3f3f;
             z-index: 1000;
         }
@@ -37,18 +36,21 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .menu-btn {
+            width: 40px;
+            height: 40px;
             background: none;
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            padding: 8px;
             border-radius: 50%;
-            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .menu-btn:hover {
@@ -58,31 +60,28 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 2px;
         }
 
-        .logo i {
+        .logo-icon {
             color: #ff0000;
             font-size: 28px;
-            font-style: normal;
+            margin-right: 2px;
         }
 
-        .logo span {
+        .logo-text {
             font-size: 22px;
             font-weight: 600;
             letter-spacing: -0.5px;
             color: white;
         }
 
-        .logo .itube {
-            color: white;
-        }
-
-        .country {
+        .logo-text::after {
+            content: "RU";
+            font-size: 10px;
             color: #aaa;
-            font-size: 12px;
+            margin-left: 4px;
             font-weight: 400;
-            margin-left: 5px;
+            vertical-align: super;
         }
 
         /* Поиск */
@@ -90,34 +89,33 @@
             display: flex;
             align-items: center;
             flex: 0 1 640px;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .search-box {
+        .search-wrapper {
             display: flex;
             flex: 1;
-            height: 42px;
+            height: 40px;
         }
 
-        .search-box input {
+        .search-wrapper input {
             flex: 1;
             height: 100%;
             background-color: #121212;
             border: 1px solid #3f3f3f;
             border-radius: 40px 0 0 40px;
-            padding: 0 20px;
+            padding: 0 16px;
             color: white;
             font-size: 16px;
-            transition: border-color 0.2s;
         }
 
-        .search-box input:focus {
+        .search-wrapper input:focus {
             border-color: #1c62b9;
             outline: none;
         }
 
-        .search-box button {
-            width: 70px;
+        .search-wrapper button {
+            width: 64px;
             height: 100%;
             background-color: #3f3f3f;
             border: 1px solid #3f3f3f;
@@ -128,13 +126,13 @@
             transition: background-color 0.2s;
         }
 
-        .search-box button:hover {
+        .search-wrapper button:hover {
             background-color: #4f4f4f;
         }
 
         .voice-search {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background-color: #3f3f3f;
             border: none;
             border-radius: 50%;
@@ -152,18 +150,18 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .header-right button {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: none;
             border: none;
             color: white;
             cursor: pointer;
             border-radius: 50%;
-            font-size: 20px;
+            font-size: 18px;
             transition: background-color 0.2s;
         }
 
@@ -172,30 +170,29 @@
         }
 
         .avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #ff0000, #ff8800);
+            width: 32px;
+            height: 32px;
+            background-color: #ff0000;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 600;
-            font-size: 16px;
             cursor: pointer;
         }
 
         /* Основной контейнер */
         .main {
             display: flex;
-            margin-top: 60px;
+            margin-top: 56px;
         }
 
         /* Сайдбар */
         .sidebar {
             width: 240px;
-            background-color: #030303;
-            height: calc(100vh - 60px);
+            background-color: #0f0f0f;
+            height: calc(100vh - 56px);
             position: fixed;
             left: 0;
             overflow-y: auto;
@@ -224,8 +221,8 @@
             color: #fff;
             text-decoration: none;
             font-size: 14px;
-            transition: background-color 0.2s;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
 
         .sidebar-item:hover {
@@ -238,7 +235,7 @@
         }
 
         .sidebar-item i {
-            font-size: 20px;
+            font-size: 18px;
             width: 24px;
             text-align: center;
         }
@@ -249,147 +246,60 @@
             font-weight: 500;
             padding: 8px 24px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         /* Контент */
         .content {
             margin-left: 240px;
-            padding: 24px 30px;
+            padding: 24px 24px 0;
             flex: 1;
         }
 
-        /* Чипсы (категории) */
-        .chips {
+        /* Категории */
+        .categories {
             display: flex;
             gap: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             overflow-x: auto;
             padding-bottom: 8px;
             scrollbar-width: thin;
         }
 
-        .chips::-webkit-scrollbar {
-            height: 4px;
+        .categories::-webkit-scrollbar {
+            height: 2px;
         }
 
-        .chips::-webkit-scrollbar-thumb {
+        .categories::-webkit-scrollbar-thumb {
             background-color: #3f3f3f;
             border-radius: 4px;
         }
 
-        .chip {
-            padding: 8px 16px;
+        .category {
+            padding: 8px 12px;
             background-color: #3f3f3f;
             border: none;
             border-radius: 8px;
             color: white;
             font-size: 14px;
-            font-weight: 400;
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s;
         }
 
-        .chip:hover {
+        .category:hover {
             background-color: #4f4f4f;
         }
 
-        .chip.active {
+        .category.active {
             background-color: #fff;
-            color: #030303;
+            color: #0f0f0f;
         }
 
-        /* Секция шортс */
-        .shorts-section {
-            margin-bottom: 40px;
-        }
-
-        .shorts-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .shorts-header h2 {
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .shorts-header i {
-            font-size: 24px;
-            color: #ff0000;
-        }
-
-        .shorts-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-        }
-
-        .short-card {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .short-card:hover {
-            transform: scale(1.02);
-        }
-
-        .short-thumbnail {
-            position: relative;
-            aspect-ratio: 9/16;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .short-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .short-card:hover .short-thumbnail img {
-            transform: scale(1.05);
-        }
-
-        .short-stats {
-            position: absolute;
-            bottom: 8px;
-            left: 8px;
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(0,0,0,0.6);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        .short-title {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 4px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .short-meta {
-            color: #aaa;
-            font-size: 12px;
-        }
-
-        /* Сетка видео */
+        /* Блок с видео */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 40px;
         }
 
@@ -408,26 +318,22 @@
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
+            background-color: #2a2a2a;
         }
 
         .thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .video-card:hover .thumbnail img {
-            transform: scale(1.05);
         }
 
         .duration {
             position: absolute;
             bottom: 8px;
             right: 8px;
-            background: rgba(0,0,0,0.8);
+            background-color: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 2px 6px;
+            padding: 2px 4px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 500;
@@ -452,12 +358,6 @@
             font-weight: 600;
         }
 
-        .channel-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .video-details {
             flex: 1;
         }
@@ -465,8 +365,8 @@
         .video-title {
             font-size: 16px;
             font-weight: 500;
-            margin-bottom: 4px;
             line-height: 1.4;
+            margin-bottom: 4px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -477,14 +377,6 @@
             color: #aaa;
             font-size: 14px;
             margin-bottom: 2px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .verified {
-            color: #aaa;
-            font-size: 14px;
         }
 
         .video-stats {
@@ -492,82 +384,114 @@
             font-size: 12px;
         }
 
-        /* Разделитель */
-        .section-divider {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 40px 0 20px;
+        .verified {
+            display: inline-block;
+            margin-left: 4px;
+            color: #aaa;
+            font-size: 14px;
         }
 
-        .section-divider h3 {
+        /* Секция Shorts */
+        .shorts-section {
+            margin-bottom: 40px;
+        }
+
+        .shorts-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .shorts-header i {
+            font-size: 24px;
+            color: #ff0000;
+        }
+
+        .shorts-header h2 {
             font-size: 20px;
             font-weight: 600;
         }
 
-        .section-divider-line {
+        .shorts-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .short-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .short-card:hover {
+            transform: scale(1.02);
+        }
+
+        .short-thumbnail {
+            position: relative;
+            aspect-ratio: 9/16;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            background-color: #2a2a2a;
+        }
+
+        .short-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .short-views {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            color: white;
+            font-size: 12px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .short-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .short-meta {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        /* Разделитель */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 40px 0 20px;
+        }
+
+        .divider h3 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .divider-line {
             flex: 1;
             height: 1px;
             background-color: #3f3f3f;
         }
 
-        /* Реклама */
-        .ad-banner {
-            background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
-            border-radius: 12px;
-            padding: 16px 24px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .ad-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .ad-icon {
-            width: 50px;
-            height: 50px;
-            background: #ff0000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .ad-text h4 {
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        .ad-text p {
-            color: #aaa;
-            font-size: 14px;
-        }
-
-        .ad-button {
-            padding: 10px 24px;
-            background-color: #ff0000;
-            border: none;
-            border-radius: 40px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .ad-button:hover {
-            background-color: #cc0000;
-        }
-
         /* Футер */
         .footer {
-            margin-top: 50px;
-            padding-top: 20px;
+            margin-top: 40px;
+            padding: 20px 0;
             border-top: 1px solid #3f3f3f;
         }
 
@@ -604,37 +528,36 @@
         }
 
         @media (max-width: 900px) {
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .shorts-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
             .sidebar {
                 display: none;
             }
             .content {
                 margin-left: 0;
             }
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .shorts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка -->
+    <!-- Шапка YouTube -->
     <header class="header">
         <div class="header-left">
             <button class="menu-btn">☰</button>
             <div class="logo">
-                <span class="logo i">▶</span>
-                <span class="itube">ITube</span>
-                <span class="country">RU</span>
+                <span class="logo-icon">▶</span>
+                <span class="logo-text">YouTube</span>
             </div>
         </div>
 
         <!-- Поиск -->
         <div class="search-container">
-            <div class="search-box">
-                <input type="text" placeholder="Введите запрос...">
+            <div class="search-wrapper">
+                <input type="text" placeholder="Введите запрос">
                 <button>🔍</button>
             </div>
             <button class="voice-search">🎤</button>
@@ -698,7 +621,7 @@
                 </div>
                 <div class="sidebar-item">
                     <i>🧪</i>
-                    <span>Morty Adventures</span>
+                    <span>Morty Smith</span>
                 </div>
                 <div class="sidebar-item">
                     <i>👽</i>
@@ -706,7 +629,7 @@
                 </div>
                 <div class="sidebar-item">
                     <i>🤖</i>
-                    <span>Squanchy TV</span>
+                    <span>Squanchy</span>
                 </div>
                 <div class="sidebar-item">
                     <i>🌌</i>
@@ -717,97 +640,87 @@
 
         <!-- Контент -->
         <div class="content">
-            <!-- Чипсы (категории) -->
-            <div class="chips">
-                <button class="chip active">Все</button>
-                <button class="chip">Игры</button>
-                <button class="chip">Музыка</button>
-                <button class="chip">Наука</button>
-                <button class="chip">Рик и Морти</button>
-                <button class="chip">Приключения</button>
-                <button class="chip">Обучение</button>
-                <button class="chip">Юмор</button>
-                <button class="chip">Новости</button>
-                <button class="chip">Спорт</button>
-                <button class="chip">Кино</button>
+            <!-- Категории -->
+            <div class="categories">
+                <button class="category active">Все</button>
+                <button class="category">Игры</button>
+                <button class="category">Музыка</button>
+                <button class="category">Рик и Морти</button>
+                <button class="category">Наука</button>
+                <button class="category">Приключения</button>
+                <button class="category">Обучение</button>
+                <button class="category">Юмор</button>
+                <button class="category">Новости</button>
             </div>
 
-            <!-- Реклама -->
-            <div class="ad-banner">
-                <div class="ad-content">
-                    <div class="ad-icon">⚡</div>
-                    <div class="ad-text">
-                        <h4>Межгалактический VPN</h4>
-                        <p>Обходи блокировки в любой вселенной!</p>
-                    </div>
-                </div>
-                <button class="ad-button">Попробовать</button>
-            </div>
-
-            <!-- Длинные видео 1 -->
+            <!-- Длинные видео -->
             <div class="video-grid">
+                <!-- Видео 1 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b0?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b0?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">32:15</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🔬</div>
                         <div class="video-details">
-                            <h3 class="video-title">Как создать портал в домашних условиях - полный гайд</h3>
+                            <h3 class="video-title">Как собрать портальную пушку за 5 минут</h3>
                             <p class="channel-name">Rick Sanchez ✓</p>
                             <p class="video-stats">5.2M просмотров • 2 дня назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 2 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b1?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b1?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">45:20</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🧪</div>
                         <div class="video-details">
-                            <h3 class="video-title">Морти облажался: хроники неудачных экспериментов</h3>
-                            <p class="channel-name">Morty Adventures ✓</p>
+                            <h3 class="video-title">10 раз Морти облажался в приключениях</h3>
+                            <p class="channel-name">Morty Smith</p>
                             <p class="video-stats">8.1M просмотров • 5 дней назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 3 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b2?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b2?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">28:45</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">👽</div>
                         <div class="video-details">
-                            <h3 class="video-title">Планета обезьян - путешествие с Бердперсоном</h3>
+                            <h3 class="video-title">Планета обезьян - полный обзор</h3>
                             <p class="channel-name">Birdperson ✓</p>
                             <p class="video-stats">3.4M просмотров • 1 неделя назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 4 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b3?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b3?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">1:15:30</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🤖</div>
                         <div class="video-details">
-                            <h3 class="video-title">Квантовая физика для тупых - лекция от Сквончи</h3>
-                            <p class="channel-name">Squanchy TV ✓</p>
+                            <h3 class="video-title">Квантовая физика для чайников</h3>
+                            <p class="channel-name">Squanchy TV</p>
                             <p class="video-stats">2.8M просмотров • 3 дня назад</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Шортс секция -->
+            <!-- Shorts секция -->
             <div class="shorts-section">
                 <div class="shorts-header">
                     <i>▶</i>
@@ -815,130 +728,125 @@
                 </div>
 
                 <div class="shorts-grid">
+                    <!-- Short 1 -->
                     <div class="short-card">
                         <div class="short-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b4?w=400" alt="Short">
-                            <div class="short-stats">
-                                <span>👁️</span>
-                                <span>1.2M</span>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b4?w=400&h=711&fit=crop" alt="Short">
+                            <span class="short-views">1.2M просмотров</span>
                         </div>
-                        <h4 class="short-title">Морти танцует под Portal-бит</h4>
+                        <h4 class="short-title">Рик танцует под научную музыку 🧪</h4>
                         <p class="short-meta">45K лайков</p>
                     </div>
 
+                    <!-- Short 2 -->
                     <div class="short-card">
                         <div class="short-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b5?w=400" alt="Short">
-                            <div class="short-stats">
-                                <span>👁️</span>
-                                <span>800K</span>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b5?w=400&h=711&fit=crop" alt="Short">
+                            <span class="short-views">800K просмотров</span>
                         </div>
-                        <h4 class="short-title">Рик чихнул в портал 🤣</h4>
+                        <h4 class="short-title">Морти пытается повторить трюк Рика</h4>
                         <p class="short-meta">200K лайков</p>
                     </div>
 
+                    <!-- Short 3 -->
                     <div class="short-card">
                         <div class="short-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b6?w=400" alt="Short">
-                            <div class="short-stats">
-                                <span>👁️</span>
-                                <span>2.1M</span>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b6?w=400&h=711&fit=crop" alt="Short">
+                            <span class="short-views">2.1M просмотров</span>
                         </div>
-                        <h4 class="short-title">Мистер Мисикс показывает фокусы</h4>
+                        <h4 class="short-title">Мистер Мисикс показывает фокус 🎩</h4>
                         <p class="short-meta">500K лайков</p>
                     </div>
 
+                    <!-- Short 4 -->
                     <div class="short-card">
                         <div class="short-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b7?w=400" alt="Short">
-                            <div class="short-stats">
-                                <span>👁️</span>
-                                <span>950K</span>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b7?w=400&h=711&fit=crop" alt="Short">
+                            <span class="short-views">950K просмотров</span>
                         </div>
-                        <h4 class="short-title">Джерри пытается быть крутым</h4>
+                        <h4 class="short-title">Джерри случайно открыл портал</h4>
                         <p class="short-meta">150K лайков</p>
                     </div>
 
+                    <!-- Short 5 -->
                     <div class="short-card">
                         <div class="short-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b8?w=400" alt="Short">
-                            <div class="short-stats">
-                                <span>👁️</span>
-                                <span>3.3M</span>
-                            </div>
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b8?w=400&h=711&fit=crop" alt="Short">
+                            <span class="short-views">3.3M просмотров</span>
                         </div>
-                        <h4 class="short-title">Создаем огуречного человечка</h4>
+                        <h4 class="short-title">Как сделать огуречного Рика 🥒</h4>
                         <p class="short-meta">780K лайков</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Длинные видео 2 -->
-            <div class="section-divider">
+            <!-- Разделитель -->
+            <div class="divider">
                 <h3>Рекомендуемые видео</h3>
-                <div class="section-divider-line"></div>
+                <div class="divider-line"></div>
             </div>
 
+            <!-- Ещё видео -->
             <div class="video-grid">
+                <!-- Видео 5 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b9?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b9?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">18:22</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🌌</div>
                         <div class="video-details">
-                            <h3 class="video-title">10 вселенных, которые лучше нашей</h3>
+                            <h3 class="video-title">10 вселенных, в которых Рик гений</h3>
                             <p class="channel-name">Galactic News ✓</p>
                             <p class="video-stats">1.8M просмотров • 4 часа назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 6 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b0?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b0?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">52:10</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🔬</div>
                         <div class="video-details">
-                            <h3 class="video-title">Самые опасные изобретения Рика</h3>
+                            <h3 class="video-title">Топ 10 опасных изобретений Рика</h3>
                             <p class="channel-name">Rick Sanchez ✓</p>
                             <p class="video-stats">6.5M просмотров • 2 недели назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 7 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b1?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b1?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">24:15</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">👽</div>
                         <div class="video-details">
-                            <h3 class="video-title">Как понять женщин с другой планеты</h3>
+                            <h3 class="video-title">Свидание с инопланетянкой: советы</h3>
                             <p class="channel-name">Birdperson ✓</p>
                             <p class="video-stats">4.2M просмотров • 3 дня назад</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Видео 8 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b2?w=400" alt="Video">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b2?w=400&h=225&fit=crop" alt="Video">
                         <span class="duration">1:05:30</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🧪</div>
                         <div class="video-details">
-                            <h3 class="video-title">Морти учит математику через приключения</h3>
-                            <p class="channel-name">Morty Adventures</p>
+                            <h3 class="video-title">Морти учит математику через порталы</h3>
+                            <p class="channel-name">Morty Smith</p>
                             <p class="video-stats">900K просмотров • 6 часов назад</p>
                         </div>
                     </div>
@@ -948,7 +856,7 @@
             <!-- Футер -->
             <footer class="footer">
                 <div class="footer-links">
-                    <a href="#">О ITube</a>
+                    <a href="#">О YouTube</a>
                     <a href="#">Пресса</a>
                     <a href="#">Авторские права</a>
                     <a href="#">Связаться с нами</a>
@@ -958,10 +866,9 @@
                     <a href="#">Условия</a>
                     <a href="#">Конфиденциальность</a>
                     <a href="#">Политика</a>
-                    <a href="#">Безопасность</a>
                 </div>
                 <div class="copyright">
-                    © 2025 ITube - клон Ютуба от Рика. Все права защищены, Морти!
+                    © 2025 YouTube, LLC
                 </div>
             </footer>
         </div>
