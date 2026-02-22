@@ -3,169 +3,968 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TubeFlix - Клон Ютуба от Рика</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>ITube - Клон Ютуба от Рика</title>
+    <style>
+        /* Стили внутри, чтобы ты не потерял, долбаеб */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #030303;
+            color: #fff;
+        }
+
+        /* Шапка */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: #030303;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #3f3f3f;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .menu-btn:hover {
+            background-color: #3f3f3f;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo i {
+            color: #ff0000;
+            font-size: 28px;
+            font-style: normal;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: white;
+        }
+
+        .logo .itube {
+            color: white;
+        }
+
+        .country {
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 400;
+            margin-left: 5px;
+        }
+
+        /* Поиск */
+        .search-container {
+            display: flex;
+            align-items: center;
+            flex: 0 1 640px;
+            gap: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            flex: 1;
+            height: 42px;
+        }
+
+        .search-box input {
+            flex: 1;
+            height: 100%;
+            background-color: #121212;
+            border: 1px solid #3f3f3f;
+            border-radius: 40px 0 0 40px;
+            padding: 0 20px;
+            color: white;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #1c62b9;
+            outline: none;
+        }
+
+        .search-box button {
+            width: 70px;
+            height: 100%;
+            background-color: #3f3f3f;
+            border: 1px solid #3f3f3f;
+            border-radius: 0 40px 40px 0;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+        }
+
+        .search-box button:hover {
+            background-color: #4f4f4f;
+        }
+
+        .voice-search {
+            width: 42px;
+            height: 42px;
+            background-color: #3f3f3f;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+        }
+
+        .voice-search:hover {
+            background-color: #4f4f4f;
+        }
+
+        /* Правая часть */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right button {
+            width: 42px;
+            height: 42px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .header-right button:hover {
+            background-color: #3f3f3f;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ff0000, #ff8800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Основной контейнер */
+        .main {
+            display: flex;
+            margin-top: 60px;
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            width: 240px;
+            background-color: #030303;
+            height: calc(100vh - 60px);
+            position: fixed;
+            left: 0;
+            overflow-y: auto;
+            padding: 12px 0;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #3f3f3f;
+            border-radius: 4px;
+        }
+
+        .sidebar-section {
+            padding: 8px 0;
+            border-bottom: 1px solid #3f3f3f;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 8px 24px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-item:hover {
+            background-color: #3f3f3f;
+        }
+
+        .sidebar-item.active {
+            background-color: #3f3f3f;
+            font-weight: 500;
+        }
+
+        .sidebar-item i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-title {
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Контент */
+        .content {
+            margin-left: 240px;
+            padding: 24px 30px;
+            flex: 1;
+        }
+
+        /* Чипсы (категории) */
+        .chips {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: thin;
+        }
+
+        .chips::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .chips::-webkit-scrollbar-thumb {
+            background-color: #3f3f3f;
+            border-radius: 4px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background-color: #3f3f3f;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 400;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background-color: #4f4f4f;
+        }
+
+        .chip.active {
+            background-color: #fff;
+            color: #030303;
+        }
+
+        /* Секция шортс */
+        .shorts-section {
+            margin-bottom: 40px;
+        }
+
+        .shorts-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .shorts-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .shorts-header i {
+            font-size: 24px;
+            color: #ff0000;
+        }
+
+        .shorts-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .short-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .short-card:hover {
+            transform: scale(1.02);
+        }
+
+        .short-thumbnail {
+            position: relative;
+            aspect-ratio: 9/16;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .short-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .short-card:hover .short-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .short-stats {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0,0,0,0.6);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .short-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .short-meta {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        /* Сетка видео */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .thumbnail {
+            position: relative;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .video-card:hover .thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .video-info {
+            display: flex;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #ff0000, #ff8800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .channel-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-details {
+            flex: 1;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .channel-name {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .verified {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .video-stats {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        /* Разделитель */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0 20px;
+        }
+
+        .section-divider h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .section-divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: #3f3f3f;
+        }
+
+        /* Реклама */
+        .ad-banner {
+            background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ad-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ad-icon {
+            width: 50px;
+            height: 50px;
+            background: #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .ad-text h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .ad-text p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .ad-button {
+            padding: 10px 24px;
+            background-color: #ff0000;
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .ad-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #3f3f3f;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .video-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .shorts-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .shorts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .sidebar {
+                display: none;
+            }
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Шапка как у Ютуба, блять -->
+    <!-- Шапка -->
     <header class="header">
         <div class="header-left">
             <button class="menu-btn">☰</button>
             <div class="logo">
-                <span class="logo-red">►</span>
-                <span class="logo-text">TubeFlix</span>
+                <span class="logo i">▶</span>
+                <span class="itube">ITube</span>
+                <span class="country">RU</span>
             </div>
         </div>
-        
-        <div class="search-bar">
-            <input type="text" placeholder="Введите запрос...">
-            <button class="search-btn">🔍</button>
+
+        <!-- Поиск -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" placeholder="Введите запрос...">
+                <button>🔍</button>
+            </div>
             <button class="voice-search">🎤</button>
         </div>
-        
+
+        <!-- Правая часть -->
         <div class="header-right">
-            <button class="create-btn">➕ Создать</button>
-            <button class="apps-btn">📱</button>
-            <button class="notifications-btn">🔔</button>
-            <div class="avatar">👤</div>
+            <button>📹</button>
+            <button>🔔</button>
+            <div class="avatar">R</div>
         </div>
     </header>
 
-    <main class="main-container">
-        <!-- Боковая панель -->
+    <!-- Основной контент -->
+    <div class="main">
+        <!-- Сайдбар -->
         <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">🏠 Главная</a>
-                <a href="#" class="nav-item">▶ Shots</a>
-                <a href="#" class="nav-item">📋 Подписки</a>
-                <hr>
-                <a href="#" class="nav-item">📚 Библиотека</a>
-                <a href="#" class="nav-item">📜 История</a>
-                <a href="#" class="nav-item">🎬 Ваши видео</a>
-                <a href="#" class="nav-item">⏰ Смотреть позже</a>
-                <a href="#" class="nav-item">👍 Понравившиеся</a>
-                <hr>
-                <h3>Подписки</h3>
-                <a href="#" class="nav-item">🔬 Rick Sanchez</a>
-                <a href="#" class="nav-item">🧪 Morty Smith</a>
-                <a href="#" class="nav-item">👽 Birdperson</a>
-                <a href="#" class="nav-item">🤖 Squanchy</a>
-            </nav>
-        </aside>
-
-        <!-- Основной контент -->
-        <div class="content">
-            <!-- Категории -->
-            <div class="categories">
-                <button class="category-btn active">Все</button>
-                <button class="category-btn">Игры</button>
-                <button class="category-btn">Музыка</button>
-                <button class="category-btn">Наука</button>
-                <button class="category-btn">Приключения</button>
-                <button class="category-btn">Мультивы</button>
-                <button class="category-btn">Портал-шоу</button>
-                <button class="category-btn">Гараж</button>
+            <div class="sidebar-section">
+                <div class="sidebar-item active">
+                    <i>🏠</i>
+                    <span>Главная</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>▶</i>
+                    <span>Shorts</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>📋</i>
+                    <span>Подписки</span>
+                </div>
             </div>
 
-            <!-- Сетка видео -->
+            <div class="sidebar-section">
+                <div class="sidebar-item">
+                    <i>📚</i>
+                    <span>Библиотека</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>📜</i>
+                    <span>История</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>🎬</i>
+                    <span>Ваши видео</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>⏰</i>
+                    <span>Смотреть позже</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>👍</i>
+                    <span>Понравившиеся</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Подписки</div>
+                <div class="sidebar-item">
+                    <i>🔬</i>
+                    <span>Rick Sanchez</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>🧪</i>
+                    <span>Morty Adventures</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>👽</i>
+                    <span>Birdperson</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>🤖</i>
+                    <span>Squanchy TV</span>
+                </div>
+                <div class="sidebar-item">
+                    <i>🌌</i>
+                    <span>Galactic News</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Контент -->
+        <div class="content">
+            <!-- Чипсы (категории) -->
+            <div class="chips">
+                <button class="chip active">Все</button>
+                <button class="chip">Игры</button>
+                <button class="chip">Музыка</button>
+                <button class="chip">Наука</button>
+                <button class="chip">Рик и Морти</button>
+                <button class="chip">Приключения</button>
+                <button class="chip">Обучение</button>
+                <button class="chip">Юмор</button>
+                <button class="chip">Новости</button>
+                <button class="chip">Спорт</button>
+                <button class="chip">Кино</button>
+            </div>
+
+            <!-- Реклама -->
+            <div class="ad-banner">
+                <div class="ad-content">
+                    <div class="ad-icon">⚡</div>
+                    <div class="ad-text">
+                        <h4>Межгалактический VPN</h4>
+                        <p>Обходи блокировки в любой вселенной!</p>
+                    </div>
+                </div>
+                <button class="ad-button">Попробовать</button>
+            </div>
+
+            <!-- Длинные видео 1 -->
             <div class="video-grid">
-                <!-- Видео 1 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/00ff00?text=Рик+и+Морти" alt="Thumbnail">
-                        <span class="duration">10:15</span>
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b0?w=400" alt="Video">
+                        <span class="duration">32:15</span>
                     </div>
                     <div class="video-info">
-                        <div class="channel-avatar">🧪</div>
+                        <div class="channel-avatar">🔬</div>
                         <div class="video-details">
-                            <h4>Как создать портал в домашних условиях</h4>
-                            <p class="channel-name">Rick Sanchez</p>
-                            <p class="video-stats">1.5M просмотров • 2 дня назад</p>
+                            <h3 class="video-title">Как создать портал в домашних условиях - полный гайд</h3>
+                            <p class="channel-name">Rick Sanchez ✓</p>
+                            <p class="video-stats">5.2M просмотров • 2 дня назад</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Видео 2 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff00ff?text=Морти+облажался" alt="Thumbnail">
-                        <span class="duration">3:42</span>
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b1?w=400" alt="Video">
+                        <span class="duration">45:20</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🧪</div>
                         <div class="video-details">
-                            <h4>Морти чуть не взорвал гараж</h4>
-                            <p class="channel-name">Rick Sanchez</p>
-                            <p class="video-stats">5M просмотров • неделю назад</p>
+                            <h3 class="video-title">Морти облажался: хроники неудачных экспериментов</h3>
+                            <p class="channel-name">Morty Adventures ✓</p>
+                            <p class="video-stats">8.1M просмотров • 5 дней назад</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Видео 3 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/ffff00?text=Планета+Блипс" alt="Thumbnail">
-                        <span class="duration">22:30</span>
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b2?w=400" alt="Video">
+                        <span class="duration">28:45</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">👽</div>
                         <div class="video-details">
-                            <h4>Путешествие на планету обезьян</h4>
-                            <p class="channel-name">Birdperson</p>
-                            <p class="video-stats">800K просмотров • месяц назад</p>
+                            <h3 class="video-title">Планета обезьян - путешествие с Бердперсоном</h3>
+                            <p class="channel-name">Birdperson ✓</p>
+                            <p class="video-stats">3.4M просмотров • 1 неделя назад</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Видео 4 -->
                 <div class="video-card">
                     <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/00ffff?text=Научное+шоу" alt="Thumbnail">
-                        <span class="duration">15:45</span>
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b3?w=400" alt="Video">
+                        <span class="duration">1:15:30</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-avatar">🤖</div>
                         <div class="video-details">
-                            <h4>Квантовая физика для тупых</h4>
-                            <p class="channel-name">Squanchy</p>
-                            <p class="video-stats">2M просмотров • 3 дня назад</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Видео 5 -->
-                <div class="video-card">
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff0000?text=Межгалактический+совет" alt="Thumbnail">
-                        <span class="duration">42:10</span>
-                    </div>
-                    <div class="video-info">
-                        <div class="channel-avatar">👾</div>
-                        <div class="video-details">
-                            <h4>Совет Риков: экстренное собрание</h4>
-                            <p class="channel-name">Council of Ricks</p>
-                            <p class="video-stats">10M просмотров • год назад</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Видео 6 -->
-                <div class="video-card">
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/320x180/1a1a1a/ff8800?text=Шортс+от+Морти" alt="Thumbnail">
-                        <span class="duration">0:45</span>
-                    </div>
-                    <div class="video-info">
-                        <div class="channel-avatar">🧪</div>
-                        <div class="video-details">
-                            <h4>#shorts Морти пытается быть крутым</h4>
-                            <p class="channel-name">Morty Smith</p>
-                            <p class="video-stats">100K просмотров • час назад</p>
+                            <h3 class="video-title">Квантовая физика для тупых - лекция от Сквончи</h3>
+                            <p class="channel-name">Squanchy TV ✓</p>
+                            <p class="video-stats">2.8M просмотров • 3 дня назад</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Шортс секция -->
+            <div class="shorts-section">
+                <div class="shorts-header">
+                    <i>▶</i>
+                    <h2>Shorts</h2>
+                </div>
+
+                <div class="shorts-grid">
+                    <div class="short-card">
+                        <div class="short-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b4?w=400" alt="Short">
+                            <div class="short-stats">
+                                <span>👁️</span>
+                                <span>1.2M</span>
+                            </div>
+                        </div>
+                        <h4 class="short-title">Морти танцует под Portal-бит</h4>
+                        <p class="short-meta">45K лайков</p>
+                    </div>
+
+                    <div class="short-card">
+                        <div class="short-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b5?w=400" alt="Short">
+                            <div class="short-stats">
+                                <span>👁️</span>
+                                <span>800K</span>
+                            </div>
+                        </div>
+                        <h4 class="short-title">Рик чихнул в портал 🤣</h4>
+                        <p class="short-meta">200K лайков</p>
+                    </div>
+
+                    <div class="short-card">
+                        <div class="short-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b6?w=400" alt="Short">
+                            <div class="short-stats">
+                                <span>👁️</span>
+                                <span>2.1M</span>
+                            </div>
+                        </div>
+                        <h4 class="short-title">Мистер Мисикс показывает фокусы</h4>
+                        <p class="short-meta">500K лайков</p>
+                    </div>
+
+                    <div class="short-card">
+                        <div class="short-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b7?w=400" alt="Short">
+                            <div class="short-stats">
+                                <span>👁️</span>
+                                <span>950K</span>
+                            </div>
+                        </div>
+                        <h4 class="short-title">Джерри пытается быть крутым</h4>
+                        <p class="short-meta">150K лайков</p>
+                    </div>
+
+                    <div class="short-card">
+                        <div class="short-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b8?w=400" alt="Short">
+                            <div class="short-stats">
+                                <span>👁️</span>
+                                <span>3.3M</span>
+                            </div>
+                        </div>
+                        <h4 class="short-title">Создаем огуречного человечка</h4>
+                        <p class="short-meta">780K лайков</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Длинные видео 2 -->
+            <div class="section-divider">
+                <h3>Рекомендуемые видео</h3>
+                <div class="section-divider-line"></div>
+            </div>
+
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b3b9?w=400" alt="Video">
+                        <span class="duration">18:22</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🌌</div>
+                        <div class="video-details">
+                            <h3 class="video-title">10 вселенных, которые лучше нашей</h3>
+                            <p class="channel-name">Galactic News ✓</p>
+                            <p class="video-stats">1.8M просмотров • 4 часа назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b0?w=400" alt="Video">
+                        <span class="duration">52:10</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🔬</div>
+                        <div class="video-details">
+                            <h3 class="video-title">Самые опасные изобретения Рика</h3>
+                            <p class="channel-name">Rick Sanchez ✓</p>
+                            <p class="video-stats">6.5M просмотров • 2 недели назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b1?w=400" alt="Video">
+                        <span class="duration">24:15</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">👽</div>
+                        <div class="video-details">
+                            <h3 class="video-title">Как понять женщин с другой планеты</h3>
+                            <p class="channel-name">Birdperson ✓</p>
+                            <p class="video-stats">4.2M просмотров • 3 дня назад</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1634907844139-b5d9b5b0b4b2?w=400" alt="Video">
+                        <span class="duration">1:05:30</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">🧪</div>
+                        <div class="video-details">
+                            <h3 class="video-title">Морти учит математику через приключения</h3>
+                            <p class="channel-name">Morty Adventures</p>
+                            <p class="video-stats">900K просмотров • 6 часов назад</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Футер -->
+            <footer class="footer">
+                <div class="footer-links">
+                    <a href="#">О ITube</a>
+                    <a href="#">Пресса</a>
+                    <a href="#">Авторские права</a>
+                    <a href="#">Связаться с нами</a>
+                    <a href="#">Создателям</a>
+                    <a href="#">Реклама</a>
+                    <a href="#">Разработчикам</a>
+                    <a href="#">Условия</a>
+                    <a href="#">Конфиденциальность</a>
+                    <a href="#">Политика</a>
+                    <a href="#">Безопасность</a>
+                </div>
+                <div class="copyright">
+                    © 2025 ITube - клон Ютуба от Рика. Все права защищены, Морти!
+                </div>
+            </footer>
         </div>
-    </main>
+    </div>
 </body>
 </html>
