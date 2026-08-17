@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Clone</title>
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --header-bg: #0f0f0f;
+            --text-main: #ffffff;
+            --text-secondary: #aaaaaa;
+            --hover-color: #272727;
+            --accent-color: #3ea6ff;
+            --red-color: #cc0000;
+            --border-color: #303030;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 56px;
+            background-color: var(--header-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 20px;
+            background: var(--red-color);
+            border-radius: 5px;
+            position: relative;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-left: 6px solid white;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex: 0 1 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #121212;
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 20px 0 0 20px;
+            color: white;
+            outline: none;
+        }
+
+        .search-btn {
+            background: #222;
+            border: 1px solid var(--border-color);
+            border-left: none;
+            padding: 8px 20px;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: purple;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* Main Layout */
+        .container {
+            display: flex;
+            margin-top: 56px;
+            height: calc(100vh - 56px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--bg-color);
+            overflow-y: auto;
+            padding: 10px;
+            display: none; /* Hidden on small screens */
+        }
+        @media(min-width: 1000px) { .sidebar { display: block; } }
+
+        .menu-item {
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .menu-item:hover { background: var(--hover-color); }
+        .menu-item.active { background: var(--hover-color); font-weight: bold; }
+
+        /* Content Grid */
+        .content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Video Card */
+        .video-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .video-card:hover { transform: scale(1.02); }
+
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #333;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 3px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .video-info {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .channel-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #555;
+            flex-shrink: 0;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            line-height: 1.2;
+            max-height: 2.4em;
+            overflow: hidden;
+        }
+
+        .channel-name, .views {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .channel-name:hover { color: white; }
+
+        /* Player View (Overlay) */
+        .player-overlay {
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 56px);
+            background: var(--bg-color);
+            z-index: 200;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .player-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 24px;
+        }
+        @media(max-width: 1000px) {
+            .player-container { grid-template-columns: 1fr; }
+        }
+
+        .main-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: black;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .video-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: #222;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #333; }
+        .btn-primary { background: white; color: black; }
+        .btn-primary:hover { background: #ddd; }
+        
+        .like-count { font-size: 14px; color: var(--text-secondary); margin-left: 5px; }
+        .subscribed { background: #333; color: var(--text-secondary); }
+
+        .description-box {
+            background: #222;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .close-player {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 300;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Rick Roll Special Style */
+        .rick-roll-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff00ff;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo" onclick="location.reload()">
+            <div class="logo-icon"></div>
+            <span>YouTube</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Введите запрос">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="user-actions">
+            <button class="btn btn-primary">Войти</button>
+            <div class="avatar">U</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="menu-item active">🏠 Главная</div>
+            <div class="menu-item">🎬 Shorts</div>
+            <div class="menu-item">📺 Подписки</div>
+            <hr style="border: 0; border-top: 1px solid #333; margin: 10px 0;">
+            <div class="menu-item">📚 Библиотека</div>
+            <div class="menu-item">🕒 История</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="video-grid" id="videoGrid">
+                <!-- Videos will be injected here via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Player Overlay -->
+    <div class="player-overlay" id="playerOverlay">
+        <button class="close-player" onclick="closePlayer()">✕</button>
+        <div class="player-container">
+            <div class="primary-col">
+                <div class="main-video" id="videoFrameContainer">
+                    <!-- Iframe injected here -->
+                </div>
+                <h1 class="title" id="playerTitle" style="margin-top: 15px; font-size: 20px;"></h1>
+                
+                <div class="video-actions">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="channel-icon" style="background: orange;"></div>
+                        <div>
+                            <div class="channel-name" id="playerChannel">Channel Name</div>
+                            <div class="views">1.5 млн подписчиков</div>
+                        </div>
+                        <button class="btn btn-primary" id="subBtn" onclick="toggleSub()">Подписаться</button>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn" onclick="toggleLike(this)">
+                            👍 <span class="like-count" id="likeCount">12K</span>
+                        </button>
+                        <button class="btn">👎</button>
+                        <button class="btn">↗ Поделиться</button>
+                        <button class="btn">⬇ Скачать</button>
+                    </div>
+                </div>
+
+                <div class="description-box">
+                    <p id="playerDesc">Описание видео...</p>
+                    <br>
+                    <p style="color:var(--text-secondary)">Показать еще</p>
+                </div>
+            </div>
+            
+            <div class="secondary-col">
+                <h3>Рекомендуемые</h3>
+                <div id="recommendations" style="margin-top:10px; display:flex; flex-direction:column; gap:10px;">
+                    <!-- Recs injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Generation
+        const videoGrid = document.getElementById('videoGrid');
+        const playerOverlay = document.getElementById('playerOverlay');
+        const videoFrameContainer = document.getElementById('videoFrameContainer');
+        
+        // List of real public video IDs that usually work globally
+        // We will generate 99 generic ones + 1 Rick Roll
+        const baseVideos = [
+            { id: 'jfKfPfyJRdk', title: 'lofi hip hop radio - beats to relax/study to', channel: 'Lofi Girl' },
+            { id: '5qap5aO4i9A', title: 'lofi hip hop radio - beats to sleep/chill to', channel: 'Lofi Girl' },
+            { id: 'M7lc1UVf-VE', title: 'YouTube Developers Guide', channel: 'Google Developers' },
+            { id: 'tgbNymZ7vqY', title: 'Muppets Haunted Mansion', channel: 'Disney' },
+            { id: 'kJQP7kiw5Fk', title: 'Despacito', channel: 'Luis Fonsi' },
+            { id: '9bZkp7q19f0', title: 'Gangnam Style', channel: 'officialpsy' },
+            { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk', channel: 'Mark Ronson' },
+            { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again', channel: 'Wiz Khalifa' },
+            { id: 'CevxZvSJLk8', title: 'Katy Perry - Roar', channel: 'Katy Perry' },
+            { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You', channel: 'Ed Sheeran' },
+            { id: 'lDK9QqIzhwk', title: 'Linkin Park - Numb', channel: 'Linkin Park' },
+            { id: 'fJ9rUzIMcZQ', title: 'Queen – Bohemian Rhapsody', channel: 'Queen Official' },
+            { id: 'cd-E-Wqwrtc', title: 'Relaxing Rain Sounds', channel: 'Nature Sounds' },
+            { id: 'e-ORhEE9VVg', title: 'Taylor Swift - Blank Space', channel: 'Taylor Swift' },
+            { id: 'hT_nvWreIhg', title: 'OneRepublic - Counting Stars', channel: 'OneRepublic' },
+            { id: 'YQHsXMglC9A', title: 'Adele - Hello', channel: 'Adele' },
+            { id: '2Vv-BfVoq4g', title: 'Ed Sheeran - Perfect', channel: 'Ed Sheeran' },
+            { id: 'pRpeEdMmmQ0', title: 'Shakira - Waka Waka', channel: 'Shakira' },
+            { id: 'lp-EO5I60KA', title: 'Thinking Out Loud', channel: 'Ed Sheeran' },
+            { id: 'NUsoVlDFqZg', title: 'Alan Walker - Faded', channel: 'Alan Walker' }
+        ];
+
+        const rickRollId = 'dQw4w9WgXcQ';
+
+        let videos = [];
+
+        // Generate 100 videos
+        function generateVideos() {
+            // Add the specific Rick Roll at index 4 (just for fun, not first)
+            videos.push({
+                id: rickRollId,
+                title: "Rick Astley - Never Gonna Give You Up (Official Music Video)",
+                channel: "Rick Astley",
+                views: "1.4B",
+                time: "14 лет назад",
+                isRick: true
+            });
+
+            // Fill the rest
+            for (let i = 0; i < 99; i++) {
+                const template = baseVideos[i % baseVideos.length];
+                // Slightly modify titles to make them unique in the grid
+                let suffix = i < 20 ? "" : `(Part ${i+1})`;
+                videos.push({
+                    id: template.id,
+                    title: `${template.title} ${suffix}`,
+                    channel: template.channel,
+                    views: Math.floor(Math.random() * 10) + "M",
+                    time: Math.floor(Math.random() * 11) + 1 + " лет назад",
+                    isRick: false
+                });
+            }
+        }
+
+        // Render Grid
+        function renderGrid() {
+            videoGrid.innerHTML = '';
+            videos.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.onclick = () => openPlayer(video);
+
+                const rickBadge = video.isRick ? '<div class="rick-roll-badge">LEGENDARY</div>' : '';
+
+                card.innerHTML = `
+                    <div class="thumbnail">
+                        ${rickBadge}
+                        <img src="https://img.youtube.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}">
+                        <div class="duration">12:${Math.floor(Math.random()*59)}</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-icon"></div>
+                        <div class="details">
+                            <div class="title">${video.title}</div>
+                            <div class="channel-name">${video.channel}</div>
+                            <div class="views">${video.views} просмотров • ${video.time}</div>
+                        </div>
+                    </div>
+                `;
+                videoGrid.appendChild(card);
+            });
+        }
+
+        // Player Logic
+        function openPlayer(video) {
+            playerOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Stop background scrolling
+            
+            // Load Video
+            videoFrameContainer.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${video.id}?autoplay=1" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
+            `;
+
+            document.getElementById('playerTitle').innerText = video.title;
+            document.getElementById('playerChannel').innerText = video.channel;
+            document.getElementById('playerDesc').innerText = `Это описание для видео "${video.title}". \nЗдесь мог бы быть ваш рекламный текст или ссылки на соцсети.\n\n#youtube #clone #${video.channel.replace(/\s/g,'')}`;
+            
+            // Reset buttons
+            document.getElementById('subBtn').innerText = 'Подписаться';
+            document.getElementById('subBtn').classList.remove('subscribed');
+            
+            // Reset Like Count visual
+            const likeBtn = document.querySelector('.action-buttons .btn');
+            likeBtn.style.color = 'white';
+            
+            renderRecommendations();
+        }
+
+        function closePlayer() {
+            playerOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            videoFrameContainer.innerHTML = ''; // Stop audio
+        }
+
+        function toggleSub() {
+            const btn = document.getElementById('subBtn');
+            if (btn.innerText === 'Подписаться') {
+                btn.innerText = 'Вы подписаны';
+                btn.classList.add('subscribed');
+                btn.style.background = '#333';
+                btn.style.color = '#aaa';
+            } else {
+                btn.innerText = 'Подписаться';
+                btn.classList.remove('subscribed');
+                btn.style.background = 'white';
+                btn.style.color = 'black';
+            }
+        }
+
+        function toggleLike(btn) {
+            const countSpan = btn.querySelector('.like-count');
+            let current = parseInt(countSpan.innerText.replace('K', '000').replace('M', '000000')); // Simple parse
+            
+            if (btn.style.color === 'rgb(255, 255, 255)' || btn.style.color === 'white') {
+                btn.style.color = '#3ea6ff'; // Blue liked
+                // Simulate increase
+                countSpan.innerText = '13K'; 
+            } else {
+                btn.style.color = 'white';
+                countSpan.innerText = '12K';
+            }
+        }
+
+        function renderRecommendations() {
+            const recContainer = document.getElementById('recommendations');
+            recContainer.innerHTML = '';
+            // Pick 5 random videos for sidebar
+            for(let i=0; i<5; i++) {
+                const v = videos[Math.floor(Math.random() * videos.length)];
+                const div = document.createElement('div');
+                div.style.display = 'flex';
+                div.style.gap = '10px';
+                div.style.cursor = 'pointer';
+                div.onclick = () => openPlayer(v);
+                div.innerHTML = `
+                    <div style="width:120px; height:68px; background:#333; border-radius:8px; overflow:hidden;">
+                        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" style="width:100%; height:100%;">
+                    </div>
+                    <div style="display:flex; flex-direction:column; justify-content:center;">
+                        <div style="font-size:14px; font-weight:bold; margin-bottom:4px; line-height:1.1;">${v.title.substring(0, 30)}...</div>
+                        <div style="font-size:12px; color:#aaa;">${v.channel}</div>
+                    </div>
+                `;
+                recContainer.appendChild(div);
+            }
+        }
+
+        // Init
+        generateVideos();
+        renderGrid();
+
+    </script>
+</body>
+</html>
